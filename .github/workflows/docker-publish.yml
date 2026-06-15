@@ -1,0 +1,55 @@
+name: Publish Docker images
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  ORG: matsk-sinch
+
+jobs:
+  events-server:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push events-server
+        uses: docker/build-push-action@v5
+        with:
+          context: ./events-server
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.ORG }}/sinch-events-server:latest
+
+  mongodb:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push mongodb
+        uses: docker/build-push-action@v5
+        with:
+          context: ./mongodb
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.ORG }}/sinch-events-mongodb:latest

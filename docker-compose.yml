@@ -1,0 +1,22 @@
+services:
+  mongodb:
+    build: ./mongodb
+    env_file: ./mongodb/.env.example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  events-server:
+    build: ./events-server
+    env_file: ./events-server/.env.example
+    ports:
+      - "3001:3001"
+    environment:
+      SERVER_PORT: "3001"
+      MONGODB_URI: mongodb://admin:change-me@mongodb:27017/sinch_events?authSource=admin
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:

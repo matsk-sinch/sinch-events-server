@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "sinch-events-server"
+version = "0.1.0"
+description = "Sinch Conversation Events server with MongoDB persistence"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-dotenv = "^1.0.0"
+flask = "^3.0.0"
+sinch = "^2.0.0"
+pymongo = "^4.10.0"
+gunicorn = "^23.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
